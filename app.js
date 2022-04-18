@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
 
 app.use((req, res, next) => {
     console.log(req.path)
@@ -17,17 +16,45 @@ app.get('/books', (req, res, next) => {
 })
 
 app.get('/libraries', (req, res, next) => {
-    res.send({
-        route: "/libraries",
-        permission: true
-    })
+    req.body = "librarian"
+    next()
+}, (req, res, next) => {
+    const checkPermission = (val) => {
+        return val
+    }
+    if (checkPermission(req.body) === "librarian") {
+        res.send({
+            route: "/libraries",
+            permission: true
+        })
+    }
+    else{
+        res.send({
+            route: "/libraries",
+            permission: false
+        })
+    }
 })
 
 app.get('/authors', (req, res, next) => {
-    res.send({
-        route: "/authors",
-        permission: true
-    })
+    req.body = "author"
+    next()
+}, (req, res, next) => {
+    const checkPermission = (val) => {
+        return val
+    }
+    if (checkPermission(req.body) === "author") {
+        res.send({
+            route: "/authors",
+            permission: true
+        })
+    }
+    else{
+        res.send({
+            route: "/authors",
+            permission: false
+        })
+    }
 })
 
 module.exports = app;
